@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.tfs.mkaratusi.mkaratusi.activities.BillActivity"
+    tools:showIn="@layout/activity_bill"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:id="@+id/parent_linear_layout"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical" >
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/edit_text_style"
+                android:popupBackground="#cccccc"
+                android:gravity="right" />
+            <LinearLayout
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <EditText
+                    style="@style/edit_text_style"
+                    android:popupBackground="#cccccc"
+                    android:hint="quantity"
+                    android:id="@+id/quantity_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:inputType="number"/>
+                <EditText
+                    style="@style/edit_text_style"
+                    android:popupBackground="#cccccc"
+                    android:hint="amount"
+                    android:id="@+id/amount_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <Button
+                android:id="@+id/add_field_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@android:drawable/ic_input_add"
+                android:onClick="onAddField"
+                android:textColor="#FFF"
+                android:paddingLeft="5dp"/>
+
+
+</LinearLayout>
+
+
+</ScrollView>
+

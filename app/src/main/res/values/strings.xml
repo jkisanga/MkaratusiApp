@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Mkaratusi</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_tp">List of Delears</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Register</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_bill">BillActivity</string>
+
+
+    <string name="title_activity_transitpass">TransitpassActivity</string>
+    <string name="title_activity_transitpass_route">TransitpassRouteActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="text_printOK">Successful printing</string>
+    <string name="text_printKO">Print Failed</string>
+    <string name="text_printProgress">Printing in progress</string>
+
+
+    <string name="text_unknown_error">Unknown Error</string>
+
+
+    <string name="text_test_button">Start Test</string>
+
+    <string name="text_Model">Model</string>
+    <string name="text_Id">Id</string>
+    <string name="text_tManufacturer">Manufacturer</string>
+    <string name="text_BB_Version">Band Version</string>
+    <string name="text_kernel_Version">kernel Version</string>
+    <string name="text_Build_Number">Build Number</string>
+    <string name="text_Android_Version">Android Version</string>
+    <string name="text_Custom_build_version">Custom Version</string>
+    <string name="text_imei">IMEI</string>
+    <string name="text_mac_address">Mac Address</string>
+    <string name="title_activity_product_detail">Product Details</string>
+
+
+</resources>
