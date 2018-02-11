@@ -38,6 +38,8 @@
     <string name="text_imei">IMEI</string>
     <string name="text_mac_address">Mac Address</string>
     <string name="title_activity_product_detail">Product Details</string>
+    <string name="title_activity_route">RouteActivity</string>
+    <string name="title_activity_inspection">InspectionActivity</string>
 
 
 </resources>

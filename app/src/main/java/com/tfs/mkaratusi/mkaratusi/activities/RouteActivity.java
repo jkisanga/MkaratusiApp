@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,51 +13,36 @@ import android.util.Log;
 import android.view.View;
 
 import com.tfs.mkaratusi.mkaratusi.R;
+import com.tfs.mkaratusi.mkaratusi.adapters.CheckpointAdapter;
 import com.tfs.mkaratusi.mkaratusi.adapters.ProductAdapter;
 import com.tfs.mkaratusi.mkaratusi.app.ApiConfig;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
-import com.tfs.mkaratusi.mkaratusi.models.RActivity;
-import com.tfs.mkaratusi.mkaratusi.pojo.Activity;
+import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointPrint;
 import com.tfs.mkaratusi.mkaratusi.pojo.Product;
-import com.tfs.mkaratusi.mkaratusi.realm.RealmController;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+public class RouteActivity extends AppCompatActivity {
 
-import static com.tfs.mkaratusi.mkaratusi.app.AppConfig.KEY_TPNO;
-
-public class ProductDetailActivity extends AppCompatActivity {
     private ProgressDialog dialog;
-    private String TPNo, Client;
+    private String TPNo,Client;
     int  TPId;
-    private ProductAdapter productAdapter;
-    private RecyclerView recyclerViewProduct;
+    private RecyclerView recyclerViewRoute;
+    private CheckpointAdapter mAdapter;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_detail);
+        setContentView(R.layout.activity_route);
         Toolbar toolbar =  findViewById(R.id.toolbar);
+
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             TPNo = bundle.getString(AppConfig.KEY_TPNO);
             TPId = bundle.getInt(AppConfig.KEY_TPID);
             Client = bundle.getString(AppConfig.KEY_CLIENT);
-           // db = new SQLiteHandler(this.getApplicationContext());
         }
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("TP NO : " + TPNo);
@@ -68,28 +52,42 @@ public class ProductDetailActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
 
-        recyclerViewProduct = findViewById(R.id.tp_product_recycler_view);
+
+        recyclerViewRoute =  findViewById(R.id.tp_route_recycler_view);
+
         sendTPno(TPId);
+
+        fab =  findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(RouteActivity.this, InspectionActivity.class);
+                i.putExtra(AppConfig.KEY_TPID, TPId);
+                i.putExtra(AppConfig.KEY_TPNO, TPNo);
+                i.putExtra(AppConfig.KEY_CLIENT, Client);
+                startActivity(i);
+            }
+        });
     }
 
     private void sendTPno(int tp_id) {
-        dialog.setMessage("updating data ...");
+        dialog.setMessage("loading data ...");
         dialog.show();
         try {
             ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
 
-            retrofit2.Call<List<Product>> call = getResponse.getTpProducts(tp_id);
-            call.enqueue(new retrofit2.Callback<List<Product>>() {
+            retrofit2.Call<List<CheckpointPrint>> call = getResponse.getTpCheckpoints(tp_id);
+            call.enqueue(new retrofit2.Callback<List<CheckpointPrint>>() {
                 @Override
-                public void onResponse(retrofit2.Call<List<Product>> call, retrofit2.Response<List<Product>> response) {
+                public void onResponse(retrofit2.Call<List<CheckpointPrint>> call, retrofit2.Response<List<CheckpointPrint>> response) {
                     Log.d("onResponse", "onResponse: ");
-                    List<Product> products = response.body();
+                    List<CheckpointPrint> checkpointPrints = response.body();
 
-                    productAdapter = new ProductAdapter(products);
-                    recyclerViewProduct.setAdapter(productAdapter);
-                    final LinearLayoutManager layoutManager = new LinearLayoutManager(ProductDetailActivity.this);
+                    mAdapter = new CheckpointAdapter(checkpointPrints);
+                    recyclerViewRoute.setAdapter(mAdapter);
+                    final LinearLayoutManager layoutManager = new LinearLayoutManager(RouteActivity.this);
                     layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                    recyclerViewProduct.setLayoutManager(layoutManager);
+                    recyclerViewRoute.setLayoutManager(layoutManager);
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
@@ -97,7 +95,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(retrofit2.Call<List<Product>> call, Throwable t) {
+                public void onFailure(retrofit2.Call<List<CheckpointPrint>> call, Throwable t) {
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }

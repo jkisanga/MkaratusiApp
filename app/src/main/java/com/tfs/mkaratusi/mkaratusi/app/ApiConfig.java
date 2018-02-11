@@ -6,8 +6,10 @@ import com.tfs.mkaratusi.mkaratusi.pojo.Bill;
 import com.tfs.mkaratusi.mkaratusi.pojo.BillItem;
 import com.tfs.mkaratusi.mkaratusi.pojo.BillPrint;
 import com.tfs.mkaratusi.mkaratusi.pojo.Checkpoint;
+import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointPrint;
 import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointTP;
 import com.tfs.mkaratusi.mkaratusi.pojo.PrintTp;
+import com.tfs.mkaratusi.mkaratusi.pojo.Product;
 import com.tfs.mkaratusi.mkaratusi.pojo.Transitpass;
 import com.tfs.mkaratusi.mkaratusi.pojo.User;
 
@@ -24,11 +26,6 @@ import retrofit2.http.Path;
  */
 
 public interface ApiConfig {
-
-
-    @GET("/Api/TransitPass/getExpiredTransitPasses")
-    Call<List<PrintTp>> getWeiting();
-
 
     @GET("/api/Applicant/applicantList")
     Call<List<Applicant>> getApplicants();
@@ -61,13 +58,20 @@ public interface ApiConfig {
     @POST("/api/Applicant/ResponseCheckpointTP")
     Call<CheckpointTP> postCheckpointTp(@Body CheckpointTP checkpointTP);
 
-
-
-
     @POST("/api/Applicant/ResponseUserLogin")
     Call<User> postUserLogin(@Body User user);
 
+    @GET("/Api/TransitPass/getItemsByTransitPassId/{id}")
+    Call<List<Product>> getTpProducts(@Path("id") int id);
 
+    @GET("/Api/TransitPass/getCheckPointsByTransitPassId/{id}")
+    Call<List<CheckpointPrint>> getTpCheckpoints(@Path("id") int id);
+
+    @GET("/Api/TransitPass/getIssuedTransitPasses")
+    Call<List<PrintTp>> getWeiting();
+
+    @POST("/api/Applicant/ResponseOkInspection")
+    Call<CheckpointTP> postInspectionOK(@Body CheckpointTP checkpointPrint);
 
 
 }
