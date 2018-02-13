@@ -40,6 +40,8 @@
     <string name="title_activity_product_detail">Product Details</string>
     <string name="title_activity_route">RouteActivity</string>
     <string name="title_activity_inspection">InspectionActivity</string>
+    <string name="action_sign_off">Sign Off</string>
+    <string name="action_search">search</string>
 
 
 </resources>

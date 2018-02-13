@@ -1,13 +1,17 @@
 package com.tfs.mkaratusi.mkaratusi.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,15 +28,21 @@ import com.squareup.okhttp.OkHttpClient;
 import com.tfs.mkaratusi.mkaratusi.R;
 import com.tfs.mkaratusi.mkaratusi.app.ApiConfig;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
+import com.tfs.mkaratusi.mkaratusi.app.SessionManager;
 import com.tfs.mkaratusi.mkaratusi.fragments.ExpiredTpFragment;
 import com.tfs.mkaratusi.mkaratusi.fragments.WaitingTpFragment;
 import com.tfs.mkaratusi.mkaratusi.models.RActivity;
 import com.tfs.mkaratusi.mkaratusi.models.RCheckpoint;
+import com.tfs.mkaratusi.mkaratusi.models.RPosUser;
+import com.tfs.mkaratusi.mkaratusi.models.RUser;
 import com.tfs.mkaratusi.mkaratusi.pojo.Activity;
 import com.tfs.mkaratusi.mkaratusi.pojo.Applicant;
 import com.tfs.mkaratusi.mkaratusi.pojo.Checkpoint;
+import com.tfs.mkaratusi.mkaratusi.pojo.User;
 import com.tfs.mkaratusi.mkaratusi.realm.RealmController;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -50,21 +60,35 @@ public class HomeActivity extends AppCompatActivity
     public static final String HOME_ACTIVITY = "HomeActivity";
     private ProgressDialog dialog;
     private Realm realm;
+    private SessionManager session;
     FloatingActionButton btnAddTP, btnPenndingTp;
+    String officerName, checkpoint;
+    int UserId, CheckpointId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Toolbar toolbar =  findViewById(R.id.toolbar);
+        this.realm = RealmController.with(this).getRealm();
 
+        List<RPosUser> rPosUsers = RealmController.with(this).getPosUsers();
+        officerName = rPosUsers.get(0).getOfficerName();
+        checkpoint = rPosUsers.get(0).getCheckpointName();
+        CheckpointId = rPosUsers.get(0).getCheckpointId();
+        UserId = rPosUsers.get(0).getUserId();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("TFS : "  + checkpoint );
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         setupViewPager(viewPager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout =  findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
 
+        session = new SessionManager(getApplicationContext());
+        if (!session.isLoggedIn()) {
+            logoutUser();
+        }
 
         btnAddTP =  findViewById(R.id.btn_add_tp);
         btnPenndingTp = findViewById(R.id.btn_pending_tp);
@@ -78,7 +102,7 @@ public class HomeActivity extends AppCompatActivity
 
 
         dialog = new ProgressDialog(this);
-        this.realm = RealmController.with(this).getRealm();
+
 
         btnAddTP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,14 +153,16 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_logout:
+                logoutUser();
+                return true;
+            case R.id.action_version:
+                AssetManager assetManager = getAssets();
+                // To load text file
+                InputStream input;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -298,4 +324,40 @@ public class HomeActivity extends AppCompatActivity
             //return null;
         }
     }
+
+    private void logoutUser() {
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to sign off?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Starting login activity
+                        session.setLogin(false);
+                        realm.beginTransaction();
+                        RPosUser rPosUser = realm.where(RPosUser.class).equalTo("userId", UserId).findFirst();
+                        rPosUser.deleteFromRealm();
+                        realm.commitTransaction();
+                        // Launching the login activity
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
 }

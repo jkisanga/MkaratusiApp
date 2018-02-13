@@ -20,8 +20,10 @@ import com.tfs.mkaratusi.mkaratusi.R;
 import com.tfs.mkaratusi.mkaratusi.app.ApiConfig;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
 import com.tfs.mkaratusi.mkaratusi.app.SessionManager;
+import com.tfs.mkaratusi.mkaratusi.models.RPosUser;
 import com.tfs.mkaratusi.mkaratusi.models.RUser;
 import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointTP;
+import com.tfs.mkaratusi.mkaratusi.pojo.PosUser;
 import com.tfs.mkaratusi.mkaratusi.pojo.User;
 import com.tfs.mkaratusi.mkaratusi.realm.RealmController;
 
@@ -50,6 +52,13 @@ public class LoginActivity extends Activity {
 
         // Session manager
         session = new SessionManager(getApplicationContext());
+        // Check if user is already logged in or not
+        if (session.isLoggedIn()) {
+            // User is already logged in. Take him to main activity
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
         this.realm = RealmController.with(this).getRealm();
         dialog = new ProgressDialog(this);
 
@@ -70,7 +79,7 @@ public class LoginActivity extends Activity {
                                 username = inputUsername.getText().toString().trim();
                                  pinCode = inputPincode.getText().toString().trim();
 
-                               // checkLogin(username,pinCode);
+                               checkLogin(username,pinCode);
 
                             }else{
                                 Toast.makeText(LoginActivity.this, "fill username/pin code ", Toast.LENGTH_SHORT).show();
@@ -87,13 +96,7 @@ public class LoginActivity extends Activity {
         });
 
 
-        // Check if user is already logged in or not
-        if (session.isLoggedIn()) {
-            // User is already logged in. Take him to main activity
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
+
 
         // Login button Click Event
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -105,12 +108,7 @@ public class LoginActivity extends Activity {
                      username = inputUsername.getText().toString().trim();
                      pinCode = inputPincode.getText().toString().trim();
 
-                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-
-                    Toast.makeText(LoginActivity.this, "Successful Login.", Toast.LENGTH_SHORT).show();
-                    startActivity(i);
-
-                   // checkLogin(username,pinCode);
+                    checkLogin(username,pinCode);
 
                 }else{
                     Toast.makeText(LoginActivity.this, "fill username/pin code ", Toast.LENGTH_SHORT).show();
@@ -126,25 +124,26 @@ public class LoginActivity extends Activity {
     }
 
     private void checkLogin(final String username, final String pinCode) {
-
-        final User user = new User();
+        dialog.setMessage("validating ...");
+        dialog.show();
+        final PosUser user = new PosUser();
         user.setUsername(username);
         user.setPassword(pinCode);
         try {
             ApiConfig getResponse = AppConfig.getRetrofit().create(ApiConfig.class);
 
-            retrofit2.Call<User> call = getResponse.postUserLogin(user);
-            call.enqueue(new retrofit2.Callback<User>() {
+            retrofit2.Call<PosUser> call = getResponse.postUserLogin(user);
+            call.enqueue(new retrofit2.Callback<PosUser>() {
                 @Override
-                public void onResponse(retrofit2.Call<User> call, retrofit2.Response<User> response) {
+                public void onResponse(retrofit2.Call<PosUser> call, retrofit2.Response<PosUser> response) {
                     if (response.isSuccessful()) {
-                        User user1 = response.body();
-                        RUser rUser = new RUser();
+                        PosUser user1 = response.body();
+                        RPosUser rUser = new RPosUser();
                         rUser.setId(user1.getId());
-                        rUser.setName(user1.getName());
-                        rUser.setStation_id(user1.getStation_id());
-                        rUser.setStation(user1.getStation());
-                        rUser.setStatus(true);
+                        rUser.setOfficerName(user1.getOfficerName());
+                        rUser.setUserId(user1.getUserId());
+                        rUser.setCheckpointId(user1.getCheckpointId());
+                        rUser.setCheckpointName(user1.getCheckpointName());
                         realm.beginTransaction();
                         realm.copyToRealmOrUpdate(rUser);
                         realm.commitTransaction();
@@ -154,20 +153,31 @@ public class LoginActivity extends Activity {
 
                         Toast.makeText(LoginActivity.this, "Successful Login.", Toast.LENGTH_SHORT).show();
                         startActivity(i);
-
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                     }else{
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                         Log.d("Transitpass", "onResponse : onFailure" + response.toString());
                     }
 
                 }
 
                 @Override
-                public void onFailure(retrofit2.Call<User> call, Throwable t) {
+                public void onFailure(retrofit2.Call<PosUser> call, Throwable t) {
                     Log.d("Transitpass", "onResponse : onFailure" + t.toString());
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
                 }
             });
         } catch (Exception e) {
             Log.d("Transitpass", "onResponse: Exception" + e.toString());
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
 
 

@@ -8,6 +8,7 @@ import com.tfs.mkaratusi.mkaratusi.pojo.BillPrint;
 import com.tfs.mkaratusi.mkaratusi.pojo.Checkpoint;
 import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointPrint;
 import com.tfs.mkaratusi.mkaratusi.pojo.CheckpointTP;
+import com.tfs.mkaratusi.mkaratusi.pojo.PosUser;
 import com.tfs.mkaratusi.mkaratusi.pojo.PrintTp;
 import com.tfs.mkaratusi.mkaratusi.pojo.Product;
 import com.tfs.mkaratusi.mkaratusi.pojo.Transitpass;
@@ -58,8 +59,8 @@ public interface ApiConfig {
     @POST("/api/Applicant/ResponseCheckpointTP")
     Call<CheckpointTP> postCheckpointTp(@Body CheckpointTP checkpointTP);
 
-    @POST("/api/Applicant/ResponseUserLogin")
-    Call<User> postUserLogin(@Body User user);
+    @POST("/api/PosUser/Login")
+    Call<PosUser> postUserLogin(@Body PosUser user);
 
     @GET("/Api/TransitPass/getItemsByTransitPassId/{id}")
     Call<List<Product>> getTpProducts(@Path("id") int id);

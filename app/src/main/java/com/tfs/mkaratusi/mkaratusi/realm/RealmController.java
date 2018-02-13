@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 
 import com.tfs.mkaratusi.mkaratusi.models.RActivity;
 import com.tfs.mkaratusi.mkaratusi.models.RCheckpoint;
+import com.tfs.mkaratusi.mkaratusi.models.RPosUser;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -80,15 +81,18 @@ public class RealmController {
     public RActivity getActivities(String activity) {
 
         return realm.where(RActivity.class).equalTo("name",activity)
-
                 .findFirst();
     }
 
     public RCheckpoint getSelectedCheckpointId(String name) {
-
         return realm.where(RCheckpoint.class).equalTo("name",name)
-
                 .findFirst();
+    }
+
+    public RealmResults<RPosUser> getPosUsers() {
+
+        return realm.where(RPosUser.class)
+                .findAll();
     }
 
 

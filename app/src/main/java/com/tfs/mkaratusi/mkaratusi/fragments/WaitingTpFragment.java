@@ -3,6 +3,7 @@ package com.tfs.mkaratusi.mkaratusi.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,8 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.tfs.mkaratusi.mkaratusi.R;
 import com.tfs.mkaratusi.mkaratusi.adapters.WaitingTpAdapter;
@@ -21,6 +26,7 @@ import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
 import com.tfs.mkaratusi.mkaratusi.pojo.PrintTp;
 import com.tfs.mkaratusi.mkaratusi.pojo.Transitpass;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,16 +40,8 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private ProgressDialog dialog;
-
-
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public WaitingTpFragment() {
-    }
-
+    private List<PrintTp> applicants;
+    WaitingTpAdapter waitingTpAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +71,12 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
         ListData();
         return view;
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
 
     private void ListData() {
         dialog.setMessage("loading ...");
@@ -85,14 +89,15 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
                 @Override
                 public void onResponse(Call<List<PrintTp>> call, Response<List<PrintTp>> response) {
                     Log.d("onResponse", "onResponse: ");
-                    List<PrintTp> applicants    = response.body();
-                    WaitingTpAdapter waitingTpAdapter = new WaitingTpAdapter(applicants,getActivity());
+                     applicants    = response.body();
+                     waitingTpAdapter = new WaitingTpAdapter(applicants);
+                     waitingTpAdapter.notifyDataSetChanged();
+                    recyclerView.setHasFixedSize(true);
                     recyclerView.setAdapter(waitingTpAdapter);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(mLayoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                     recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-                    Log.d("onSuccess", String.valueOf(applicants.size()));
 
                     if (dialog.isShowing()) {
                         dialog.dismiss();
@@ -118,24 +123,62 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
         }
     }
 
-
-
-
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+
+        MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        // Do something when collapsed
+                        waitingTpAdapter.setFilter(applicants);
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        // Do something when expanded
+                        Toast.makeText(getActivity(), "Enter TP No", Toast.LENGTH_SHORT).show();
+                        return true; // Return true to expand action view
+                    }
+                });
+
     }
 
     @Override
-    public void onRefresh() {
-
+    public boolean onQueryTextChange(String newText) {
+        final List<PrintTp> filteredModelList = filter(applicants, newText);
+        waitingTpAdapter.setFilter(filteredModelList);
+        return true;
     }
 
 
+    @Override
+    public void onRefresh() {
+        ListData();
+    }
+
+    private List<PrintTp> filter(List<PrintTp> models, String query) {
+        query = query.toLowerCase();
+        final List<PrintTp> filteredModelList = new ArrayList<>();
+        for (PrintTp model : models) {
+
+            final String text = model.getTransitPassNo();
+
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }
 }
