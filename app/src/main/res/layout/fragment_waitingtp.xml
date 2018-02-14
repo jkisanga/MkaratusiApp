@@ -43,12 +43,12 @@
             android:text="License No" />
 
 
-        <TextView
-            android:id="@+id/list_bill_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:text="Bill No." />
+        <!--<TextView-->
+            <!--android:id="@+id/list_bill_no"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:text="Bill No." />-->
 
         <TextView
             android:id="@+id/list_from_village"

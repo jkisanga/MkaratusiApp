@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,6 +14,13 @@ import com.tfs.mkaratusi.mkaratusi.activities.ProductDetailActivity;
 import com.tfs.mkaratusi.mkaratusi.activities.RouteActivity;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
 import com.tfs.mkaratusi.mkaratusi.pojo.PrintTp;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.tfs.mkaratusi.mkaratusi.app.AppConfig.TAG;
 
 /**
  * Created by Dell on 2/12/2018.
@@ -32,7 +40,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         listTpIssuedTo = itemView.findViewById(R.id.list_tp_issued_to);
         listTPNo = itemView.findViewById(R.id.list_tp_number);
         listTpLicenseNo = itemView.findViewById(R.id.list_license_no);
-        listTpBillNo = itemView.findViewById(R.id.list_bill_no);
+//        listTpBillNo = itemView.findViewById(R.id.list_bill_no);
         listTpForm = itemView.findViewById(R.id.list_from_village);
         listTpTo = itemView.findViewById(R.id.list_to_village);
         listTpVehicleNo = itemView.findViewById(R.id.list_vehicle_reg_no);
@@ -49,14 +57,24 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
     }
 
     public void bind(final PrintTp transitPass) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse("2012-05-20T09:00:00.000");
+            String formattedDate = new SimpleDateFormat("dd/MM/yyyy").format(date);
+            Log.d(TAG, "bind: " + formattedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         listTPNo.setText("TP No : " + transitPass.getTransitPassNo());
         listTpIssuedTo.setText("Issued To : " + transitPass.getApplicant());
         listTpLicenseNo.setText("License No : " + transitPass.getLisenceNo());
-        listTpBillNo.setText("Bill No : " + transitPass.getBillId());
+        //listTpBillNo.setText("Bill No : " + transitPass.getBillId);
         listTpForm.setText("Source : " + transitPass.getSourceName());
         listTpTo.setText("Destination : " + transitPass.getDestinationName());
         listTpVehicleNo.setText("Vehicle No : " + transitPass.getVehcleNo());
         listDateOfIssue.setText("Issued on : " + transitPass.getIssuedDate());
+//        listDateOfIssue.setText("Issued on : " + DateFormat.getDateTimeInstance().format(issuedDate));
         listExpiryDate.setText("Expiry on : " + transitPass.getExpireDate());
         listOfficer.setText("Issuer Officer : " + transitPass.getNoOfConsignment());
         listOfficerPhone.setText("Officer No : " + transitPass.getExpireDate());
@@ -64,6 +82,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
         listHummerNo.setText("Hummer No : " + transitPass.getHummerNo());
         // listStatus.setText("TP Status : " + transitPass.getStatus());
         listTpDesc.setText("More Desc : " + transitPass.getAdditionInformation());
+
 
 //
         btnProductDetail.setOnClickListener(new View.OnClickListener() {

@@ -88,169 +88,10 @@
             android:layout_marginTop="10dp"
             android:background="#ff9703" />
 
-        <TextView
-            android:text="Irregularities :"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_below="@+id/view2"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/txt_irregularities" />
-        <LinearLayout
-            android:id="@+id/linear2"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/txt_irregularities"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Spinner
-                android:layout_width="0dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/round"
-                android:layout_height="@dimen/activity_width"
-                android:layout_weight="4"
-                android:id="@+id/sp_irregularities" />
-            <Spinner
-                android:gravity="center"
-                android:layout_weight="4"
-                android:background="@drawable/round"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:id="@+id/sp_product" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linear3"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/linear2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:layout_marginRight="20dp"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:background="@drawable/round"
-                android:hint="quantity"
-                android:ems="10"
-                android:id="@+id/edt_volume"
-                android:layout_weight="4" />
-            <Spinner
-                android:gravity="center"
-                android:layout_weight="4"
-                android:background="@drawable/round"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:id="@+id/sp_unit" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linear7"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/linear3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:background="@drawable/round"
-                android:hint="value"
-                android:ems="10"
-                android:layout_weight="4"
-                android:id="@+id/edt_value" />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4" />
-
-        </LinearLayout>
-        <View
-            android:id="@+id/view0"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/linear7"
-            android:layout_marginTop="20dp"
-            android:background="#ff9703" />
-        <TextView
-            android:text="Action Taken :"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view0"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="18dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="10dp"
-            android:id="@+id/textView0" />
-        <LinearLayout
-            android:id="@+id/linear4"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/textView0"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:layout_width="0dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/round"
-                android:layout_height="@dimen/activity_width"
-                android:layout_weight="4"
-                android:id="@+id/sp_action" />
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:hint="amount"
-                android:layout_weight="4"
-                android:background="@drawable/round"
-                android:ems="10"
-                android:id="@+id/edt_amount" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/linear5"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/linear4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:layout_marginRight="20dp"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/activity_width"
-                android:textAlignment="center"
-                android:inputType="text"
-                android:background="@drawable/round"
-                android:hint="receipt no"
-                android:ems="10"
-                android:layout_weight="4"
-                android:id="@+id/edt_receipt_no" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4" />
-        </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/linear8"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/linear5"
+            android:layout_below="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -259,7 +100,6 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/activity_width"
                 android:inputType="text"
-                android:textAlignment="center"
                 android:background="@drawable/round"
                 android:hint="more description if any"
                 android:maxLines="4"
@@ -267,7 +107,6 @@
                 android:id="@+id/edt_more_desc" />
 
         </LinearLayout>
-
 
         <View
             android:id="@+id/view3"
