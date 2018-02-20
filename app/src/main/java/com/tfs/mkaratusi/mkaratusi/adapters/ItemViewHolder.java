@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.tfs.mkaratusi.mkaratusi.R;
+import com.tfs.mkaratusi.mkaratusi.activities.InspectionReportActivity;
 import com.tfs.mkaratusi.mkaratusi.activities.ProductDetailActivity;
 import com.tfs.mkaratusi.mkaratusi.activities.RouteActivity;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
@@ -109,17 +110,17 @@ public class ItemViewHolder extends RecyclerView.ViewHolder{
             }
         });
 
-//       btnCargoIssue.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Context context = view.getContext();
-//                Intent i = new Intent(context, ResultActivity.class);
-//                i.putExtra(AppConfig.KEY_TPID, transitPass.getId());
-//                i.putExtra(AppConfig.KEY_TPNO, transitPass.getTpNo());
-//                i.putExtra(AppConfig.KEY_CLIENT, transitPass.getIssuedTo());
-//                context.startActivity(i);
-//            }
-//        });
+       btnCargoIssue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = view.getContext();
+                Intent i = new Intent(context, InspectionReportActivity.class);
+                i.putExtra(AppConfig.KEY_TPID, transitPass.getId());
+                i.putExtra(AppConfig.KEY_TPNO, transitPass.getTransitPassNo());
+                i.putExtra(AppConfig.KEY_CLIENT, transitPass.getApplicant());
+                context.startActivity(i);
+            }
+        });
     }
 
 }

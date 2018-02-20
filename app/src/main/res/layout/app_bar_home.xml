@@ -21,7 +21,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMaxWidth="0dp"
@@ -37,63 +37,63 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
 
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/menu_down"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="0dp"
-        android:paddingRight="10dp"
-        android:paddingTop="44dp"
-        android:paddingBottom="0dp"
-        android:paddingLeft="10dp"
-        android:elevation="6dp"
-        android:layout_gravity="bottom|end"
-        fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
-        fab:menu_openDirection="up"
-        fab:menu_animationDelayPerItem="0"
-        fab:menu_shadowColor="#444"
-        fab:menu_colorNormal="#FFB805"
-        fab:menu_colorPressed="#F2AB00"
-        fab:menu_colorRipple="#D99200"
-        >
+    <!--<com.github.clans.fab.FloatingActionMenu-->
+        <!--android:id="@+id/menu_down"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:paddingRight="10dp"-->
+        <!--android:paddingTop="44dp"-->
+        <!--android:paddingBottom="0dp"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:elevation="6dp"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--fab:menu_labels_ellipsize="end"-->
+        <!--fab:menu_labels_singleLine="true"-->
+        <!--fab:menu_openDirection="up"-->
+        <!--fab:menu_animationDelayPerItem="0"-->
+        <!--fab:menu_shadowColor="#444"-->
+        <!--fab:menu_colorNormal="#FFB805"-->
+        <!--fab:menu_colorPressed="#F2AB00"-->
+        <!--fab:menu_colorRipple="#D99200"-->
+        <!--&gt;-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/btn_paid_tp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_manage"
-            fab:fab_size="normal"
-            fab:fab_label="Paid TP"
-            fab:fab_colorNormal="@color/main_color"
-            fab:fab_colorPressed="@color/fbutton_color_turquoise"
-            fab:fab_colorRipple="@color/fbutton_color_emerald"
-            />
+        <!--<com.github.clans.fab.FloatingActionButton-->
+            <!--android:id="@+id/btn_paid_tp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@android:drawable/ic_menu_manage"-->
+            <!--fab:fab_size="normal"-->
+            <!--fab:fab_label="Paid TP"-->
+            <!--fab:fab_colorNormal="@color/main_color"-->
+            <!--fab:fab_colorPressed="@color/fbutton_color_turquoise"-->
+            <!--fab:fab_colorRipple="@color/fbutton_color_emerald"-->
+            <!--/>-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/btn_pending_tp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_dialog_dialer"
-            fab:fab_size="normal"
-            fab:fab_colorNormal="@color/main_color"
-            fab:fab_colorPressed="@color/fbutton_color_turquoise"
-            fab:fab_colorRipple="@color/fbutton_color_emerald"
-            fab:fab_label="Pennding TP" />
+        <!--<com.github.clans.fab.FloatingActionButton-->
+            <!--android:id="@+id/btn_pending_tp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@android:drawable/ic_dialog_dialer"-->
+            <!--fab:fab_size="normal"-->
+            <!--fab:fab_colorNormal="@color/main_color"-->
+            <!--fab:fab_colorPressed="@color/fbutton_color_turquoise"-->
+            <!--fab:fab_colorRipple="@color/fbutton_color_emerald"-->
+            <!--fab:fab_label="Pennding TP" />-->
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/btn_add_tp"
-            android:text="Add new TP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_add"
-            fab:fab_size="normal"
-            fab:fab_colorNormal="@color/main_color"
-            fab:fab_colorPressed="@color/fbutton_color_turquoise"
-            fab:fab_colorRipple="@color/fbutton_color_emerald"
-            fab:fab_label="Add New TP" />
+        <!--<com.github.clans.fab.FloatingActionButton-->
+            <!--android:id="@+id/btn_add_tp"-->
+            <!--android:text="Add new TP"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@android:drawable/ic_menu_add"-->
+            <!--fab:fab_size="normal"-->
+            <!--fab:fab_colorNormal="@color/main_color"-->
+            <!--fab:fab_colorPressed="@color/fbutton_color_turquoise"-->
+            <!--fab:fab_colorRipple="@color/fbutton_color_emerald"-->
+            <!--fab:fab_label="Add New TP" />-->
 
-    </com.github.clans.fab.FloatingActionMenu>
+    <!--</com.github.clans.fab.FloatingActionMenu>-->
 
 </android.support.design.widget.CoordinatorLayout>

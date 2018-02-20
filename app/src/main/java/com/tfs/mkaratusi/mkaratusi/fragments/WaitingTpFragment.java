@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.tfs.mkaratusi.mkaratusi.R;
+import com.tfs.mkaratusi.mkaratusi.activities.HomeActivity;
 import com.tfs.mkaratusi.mkaratusi.adapters.WaitingTpAdapter;
 import com.tfs.mkaratusi.mkaratusi.app.ApiConfig;
 import com.tfs.mkaratusi.mkaratusi.app.AppConfig;
@@ -52,6 +53,8 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_waitingtp_list, container, false);
+
+
         recyclerView =  view.findViewById(R.id.tp_recycler_view);
         swipeRefreshLayout =  view.findViewById(R.id.swipe_refresh_layout);
         dialog = new ProgressDialog(getActivity());
@@ -90,7 +93,10 @@ public class WaitingTpFragment extends Fragment implements SearchView.OnQueryTex
                 public void onResponse(Call<List<PrintTp>> call, Response<List<PrintTp>> response) {
                     Log.d("onResponse", "onResponse: ");
                      applicants    = response.body();
-                     waitingTpAdapter = new WaitingTpAdapter(applicants);
+                    ((HomeActivity)getActivity()).waitingCount = applicants.size();
+                    ((HomeActivity)getActivity()).refreshData();
+
+                    waitingTpAdapter = new WaitingTpAdapter(applicants);
                      waitingTpAdapter.notifyDataSetChanged();
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setAdapter(waitingTpAdapter);

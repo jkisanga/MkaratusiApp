@@ -11,4 +11,7 @@
     <dimen name="card_margin">3dp</dimen>
     <dimen name="regular_offset">16dp</dimen>
     <dimen name="activity_width">40dp</dimen>
+
+    <dimen name="large_text">16sp</dimen>
+    <dimen name="medium_text">14sp</dimen>
 </resources>

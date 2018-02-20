@@ -68,10 +68,17 @@ public interface ApiConfig {
     @GET("/Api/TransitPass/getCheckPointsByTransitPassId/{id}")
     Call<List<CheckpointPrint>> getTpCheckpoints(@Path("id") int id);
 
+
+    @GET("/Api/TransitPass/getCheckPointsByTransitPassId/{id}")
+    Call<List<CheckpointPrint>> getChackpointIspectedReportById(@Path("id") int id);
+
     @GET("/Api/TransitPass/getIssuedTransitPasses")
     Call<List<PrintTp>> getWeiting();
 
-    @POST("/api/Applicant/ResponseOkInspection")
+    @GET("/Api/TransitPass/getExpiredTransitPasses")
+    Call<List<PrintTp>> getExpired();
+
+    @POST("/api/TransitPass/UpdateInspection")
     Call<CheckpointTP> postInspectionOK(@Body CheckpointTP checkpointPrint);
 
 

@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.squareup.okhttp.OkHttpClient;
@@ -56,6 +57,8 @@ import retrofit.Retrofit;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ViewPager viewPager;
+    //This is our tablayout
+    private TabLayout tabLayout;
     public static final String HOME_ACTIVITY = "HomeActivity";
     private ProgressDialog dialog;
     private Realm realm;
@@ -63,6 +66,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     FloatingActionButton btnAddTP, btnPenndingTp;
     String officerName, checkpoint;
     int UserId, CheckpointId;
+
+    String[] tabTitle={"Waiting","Expired"};
+    int[] itemCount = new int[2];
+    public   int waitingCount;
+    public    int expireCount;
+
+
+    public void refreshData(){
+        itemCount[0] = waitingCount;
+        itemCount[1] = expireCount;
+        try
+        {
+            setupTabIcons();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +100,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         UserId = rPosUsers.get(0).getUserId();
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("TFS : "  + checkpoint );
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
 
+        //Initializing viewPager
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setOffscreenPageLimit(2);
         setupViewPager(viewPager);
-        TabLayout tabLayout =  findViewById(R.id.tabs);
+
+        //Initializing the tablayout
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
+       refreshData();
+
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewPager.setCurrentItem(position,false);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
 
         session = new SessionManager(getApplicationContext());
@@ -89,26 +137,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             logoutUser();
         }
 
-        btnAddTP =  findViewById(R.id.btn_add_tp);
-        btnPenndingTp = findViewById(R.id.btn_pending_tp);
-        btnPenndingTp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
-            }
-        });
+       // btnAddTP =  findViewById(R.id.btn_add_tp);
+       // btnPenndingTp = findViewById(R.id.btn_pending_tp);
+//        btnPenndingTp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+//            }
+//        });
 
 
 
         dialog = new ProgressDialog(this);
 
 
-        btnAddTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, TPActivity.class));
-            }
-        });
+//        btnAddTP.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(HomeActivity.this, TPActivity.class));
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -123,7 +171,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setDataToLocalCheckpointTable();
     }
 
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new WaitingTpFragment(), "Waiting");
@@ -131,7 +178,42 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(adapter);
     }
 
+    private View prepareTabView(int pos) {
+      return   prepareTabView(pos,getLayoutInflater().inflate(R.layout.custom_tab,null));
+    }
 
+    private View prepareTabView(int pos,View view) {
+        TextView tv_title =  view.findViewById(R.id.tv_title);
+        TextView tv_count =  view.findViewById(R.id.tv_count);
+        tv_title.setText(tabTitle[pos]);
+        if(itemCount[pos]>0)
+        {
+            tv_count.setVisibility(View.VISIBLE);
+            tv_count.setText(""+itemCount[pos]);
+        }
+        else
+            tv_count.setVisibility(View.GONE);
+
+
+        return view;
+   }
+
+    private void setupTabIcons() {
+
+        for(int i=0;i<tabTitle.length;i++)
+        {
+            /*TabLayout.Tab tabitem = tabLayout.newTab();
+            tabitem.setCustomView(prepareTabView(i));
+            tabLayout.addTab(tabitem);*/
+            if(tabLayout.getTabAt(i).getCustomView() == null) {
+                tabLayout.getTabAt(i).setCustomView(prepareTabView(i));
+            }else{
+                prepareTabView(i,tabLayout.getTabAt(i).getCustomView());
+            }
+        }
+
+
+    }
 
     @Override
     public void onBackPressed() {
@@ -357,6 +439,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+
 
 
 }

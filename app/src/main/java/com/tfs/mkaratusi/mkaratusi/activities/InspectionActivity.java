@@ -89,10 +89,12 @@ public class InspectionActivity extends AppCompatActivity implements AdapterView
                    radioButton.getText();
                    if(radioButton.getText().toString().equals("OK")){
                        sendOKResult(CheckpointId,UserId, txtMoreDesc.getText().toString());
+
                    }else{
 //                       Intent i = new Intent(InspectionActivity.this, IrregularityActivity.class);
 //                       startActivity(i);
 //                       finish();
+                       Toast.makeText(InspectionActivity.this, "sssfssfss", Toast.LENGTH_SHORT).show();
 
                    }
                }else{
@@ -158,7 +160,7 @@ public class InspectionActivity extends AppCompatActivity implements AdapterView
                         if (dialog.isShowing()) {
                             dialog.dismiss();
                         }
-                        Log.d("onResponse", "onResponse: " + response.message());
+                        Log.d("onResponse_mwanzo", "onResponse: " + response.message());
                     }
 
                 }
@@ -168,12 +170,14 @@ public class InspectionActivity extends AppCompatActivity implements AdapterView
                     if (dialog.isShowing()) {
                         dialog.dismiss();
                     }
+                    Log.d("onResponse_kati", "onResponse: " + t.getMessage());
                 }
             });
         } catch (Exception e) {
             if (dialog.isShowing()) {
                 dialog.dismiss();
             }
+            Log.d("onResponse_mwisho", "onResponse: " + e.toString());
         }
     }
 
